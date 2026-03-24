@@ -1,0 +1,111 @@
+name: Release Chart
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart_version:
+        description: 'The version of helm chart'
+        required: true
+        default: ''
+      chart_name:
+        description: 'Only release select chart'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ""
+          - aperag
+  release:
+    types:
+      - published
+
+env:
+  GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  RELEASE_VERSION: ${{ github.ref_name }}
+
+run-name: Release Chart:${{ inputs.chart_name }}:${{ inputs.chart_version }} ${{ github.ref_name }}
+
+
+jobs:
+  chart-version:
+    runs-on: ubuntu-latest
+    outputs:
+      chart-version: ${{ steps.get_version.outputs.chart_version }}
+      artifact-key: ${{ steps.get_tag_name.outputs.artifact_key }}
+    steps:
+      - name: Get Chart Version
+        id: get_version
+        run: |
+          VERSION=${{ inputs.chart_version }}
+          if [ -z "$VERSION" ]; then
+              VERSION=${{ env.RELEASE_VERSION }}
+          fi
+          echo chart_version=$VERSION >> $GITHUB_OUTPUT
+          ARTIFACT_KEY="${{ env.RELEASE_VERSION }}-chart"
+          echo 'artifact_key='${ARTIFACT_KEY} >> $GITHUB_OUTPUT
+
+  release-aperag-chart:
+    if: ${{ github.event.action == 'published' || inputs.chart_name == '' || inputs.chart_name == 'aperag' }}
+    needs: [ chart-version ]
+    uses: apecloud/apecloud-cd/.github/workflows/release-charts.yml@v0.1.34
+    with:
+      VERSION: "${{ needs.chart-version.outputs.chart-version }}"
+      CHART_DIR: "deploy"
+      SPECIFY_CHART: "aperag"
+      APECD_REF: "v0.1.34"
+      CHECK_ENABLE: false
+    secrets: inherit
+
+  release-result:
+    runs-on: ubuntu-latest
+    needs: [ release-aperag-chart ]
+    if: ${{ always() && (github.event.action == 'published' || contains(inputs.chart_version, 'nightly')) }}
+    outputs:
+      release-result: ${{ steps.get_release_result.outputs.release_result }}
+    steps:
+      - name: get release result
+        id: get_release_result
+        run: |
+          ARTIFACT_KEY="${{ env.RELEASE_VERSION }}-chart"
+          touch ${ARTIFACT_KEY}
+          echo 'artifact_key='${ARTIFACT_KEY} >> $GITHUB_OUTPUT
+          
+          RELEASE_RESULT="error"
+          if [[ "${{ needs.release-aperag-chart.result }}" == "success" ]]; then
+              RELEASE_RESULT="success"
+              echo "success" > ${ARTIFACT_KEY}
+          else
+              echo "error" > ${ARTIFACT_KEY}
+          fi
+          echo 'release_result='$RELEASE_RESULT >> $GITHUB_OUTPUT
+
+      - name: Checkout apecloud-cd Code
+        uses: actions/checkout@v4
+        with:
+          repository: apecloud/apecloud-cd
+          path: apecloud-cd
+          ref: "v0.1.42"
+      - name: delete actions cache
+        continue-on-error: true
+        run: |
+          bash apecloud-cd/.github/utils/utils.sh --type 30 \
+            --github-repo "${{ github.repository }}" \
+            --tag-name "${{ steps.get_release_result.outputs.artifact_key }}"
+
+      - name: Save Artifact
+        id: cache-artifact-save
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            ${{ steps.get_release_result.outputs.artifact_key }}
+          key: ${{ steps.get_release_result.outputs.artifact_key }}
+
+  send-message:
+    needs: [ chart-version, release-result ]
+    if: ${{ always() && (github.event.action == 'published' || contains(inputs.chart_version, 'nightly')) }}
+    uses: apecloud/apecloud-cd/.github/workflows/feishui-message.yml@v0.1.34
+    with:
+      TYPE: "2"
+      CONTENT: "release chart ${{ needs.chart-version.outputs.chart-version }} ${{ needs.release-result.outputs.release-result }}"
+      APECD_REF: "v0.1.34"
+    secrets: inherit

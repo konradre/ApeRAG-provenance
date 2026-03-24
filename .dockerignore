@@ -1,0 +1,55 @@
+# Git and version control
+.git
+.gitignore
+.dockerignore
+
+# Python cache and temporary files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+.coverage
+.tox/
+.cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+aperag.egg-info/
+
+# Frontend development files (keep dist and deploy for production builds)
+frontend/node_modules
+frontend/.umi
+frontend/.umi-production
+frontend/yarn-error.log
+frontend/npm-debug.log*
+
+# Development and build artifacts
+*.egg-info/
+build/
+dist/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Database files
+*.db
+*.sqlite3
+
+# Object storage cache (runtime data)
+.objects/

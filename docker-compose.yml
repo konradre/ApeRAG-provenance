@@ -1,0 +1,264 @@
+volumes:
+  aperag-postgres-data: {}
+  aperag-qdrant-data: {}
+  aperag-redis-data: {}
+  aperag-es-data: {}
+  aperag-neo4j-data: {}
+  aperag-shared-data: {}
+
+services:
+  # ==============================================
+  # Application Services (Default startup, excluded from infra)
+  # ==============================================
+  api: &api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: ${REGISTRY:-docker.io}/apecloud/aperag:${VERSION:-v0.0.0-nightly}
+    container_name: aperag-api
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      es:
+        condition: service_healthy
+    volumes:
+      - ~/.cache:/root/.cache
+      - aperag-shared-data:/shared
+    env_file:
+      - .env
+      - envs/docker.env.overrides
+    environment:
+      - DOCRAY_HOST=${DOCRAY_HOST}
+    ports:
+      - "8000:8000"
+    command: ["/app/scripts/entrypoint.sh", "/app/scripts/start-api.sh"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || curl -f http://localhost:8000/docs || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12  # 12 * 10s = 120s (2 minutes)
+      start_period: 30s  # Give API time to start up before first check
+
+  frontend:
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+    image: ${REGISTRY:-docker.io}/apecloud/aperag-frontend:${VERSION:-v0.0.0-nightly}
+    container_name: aperag-frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    env_file:
+      - web/deploy/env.local.template
+    environment:
+      - API_SERVER_ENDPOINT=http://api:8000
+      - API_SERVER_BASE_PATH=/api/v1
+    ports:
+      - "3000:3000"
+
+  celeryworker:
+    image: ${REGISTRY:-docker.io}/apecloud/aperag:${VERSION:-v0.0.0-nightly}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: aperag-celeryworker
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      es:
+        condition: service_healthy
+    volumes:
+      - ~/.cache:/root/.cache
+      - ./resources:/data/resources
+      - aperag-shared-data:/shared
+    env_file:
+      - .env
+      - envs/docker.env.overrides
+    environment:
+      - NODE_IP=aperag-celeryworker
+      - DOCRAY_HOST=${DOCRAY_HOST}
+      - APERAG_API_BASE_URL=http://aperag-api:8000
+    command: ["/app/scripts/entrypoint.sh", "/app/scripts/start-celery-worker.sh"]
+
+  celerybeat:
+    image: ${REGISTRY:-docker.io}/apecloud/aperag:${VERSION:-v0.0.0-nightly}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: aperag-celerybeat
+    env_file:
+      - .env
+      - envs/docker.env.overrides
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      - NODE_IP=aperag-celerybeat
+    command: ["/app/scripts/entrypoint.sh", "/app/scripts/start-celery-beat.sh"]
+
+  flower:
+    image: ${REGISTRY:-docker.io}/apecloud/aperag:${VERSION:-v0.0.0-nightly}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: aperag-flower
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+      - envs/docker.env.overrides
+    ports:
+      - "5555:5555"
+    environment:
+      - NODE_IP=aperag-flower
+    command: ["/app/scripts/entrypoint.sh", "/app/scripts/start-celery-flower.sh"]
+
+  # ==============================================
+  # Infrastructure Services (always available)
+  # ==============================================
+  postgres:
+    image: ${REGISTRY:-docker.io}/apecloud/pgvector:pg16
+    container_name: aperag-postgres
+    volumes:
+      - aperag-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=aperag
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aperag"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: ${REGISTRY:-docker.io}/apecloud/redis:6
+    container_name: aperag-redis
+    volumes:
+      - aperag-redis-data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  qdrant:
+    image: ${REGISTRY:-docker.io}/apecloud/qdrant:v1.13.4
+    container_name: aperag-qdrant
+    volumes:
+      - aperag-qdrant-data:/qdrant/storage
+    ports:
+      - "6333:6333"
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 6333 || timeout 3 bash -c '</dev/tcp/localhost/6333' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  es:
+    image: ${REGISTRY:-docker.io}/apecloud/elasticsearch:8.8.2
+    container_name: aperag-es
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "xpack.security.enabled=false"
+    volumes:
+      - aperag-es-data:/usr/share/elasticsearch/data
+      - ./scripts/init-es.sh:/usr/share/elasticsearch/bin/init-es.sh
+    healthcheck:
+      test: ["CMD-SHELL", "bash /usr/share/elasticsearch/bin/init-es.sh check"]
+      interval: 10s
+      timeout: 5s
+      retries: 12 # 12 * 10s = 120s (2 minutes)
+      start_period: 10s # Give ES some time to start up before first check
+    command: bash /usr/share/elasticsearch/bin/init-es.sh
+    restart: on-failure
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.60
+    container_name: aperag-jaeger
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # HTTP collector
+      - "14250:14250"  # gRPC collector
+      - "6831:6831/udp"  # UDP agent
+      - "6832:6832/udp"  # UDP agent
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=info
+    restart: unless-stopped
+    profiles: ["jaeger"]
+
+  # ==============================================
+  # Optional Services
+  # ==============================================
+  neo4j:
+    image: neo4j:5.26.5-enterprise
+    container_name: aperag-neo4j
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_apoc_export_file_enabled=true
+    volumes:
+      - aperag-neo4j-data:/data
+    profiles: ["neo4j"]
+
+  # ==============================================
+  # DocRay Services (existing profiles)
+  # ==============================================
+  docray:
+    image: ${REGISTRY:-docker.io}/apecloud/doc-ray:${DOCRAY_VERSION:-v0.2.0}
+    container_name: aperag-docray
+    ports:
+      - "8265:8265"
+      - "8639:8639"
+    profiles: ["docray"]
+    environment:
+      - STANDALONE_MODE=true
+    deploy:
+      resources:
+        reservations:
+          memory: "8G"
+
+  docray-gpu:
+    image: ${REGISTRY:-docker.io}/apecloud/doc-ray:${DOCRAY_VERSION:-v0.2.0}
+    container_name: aperag-docray-gpu
+    ports:
+      - "8265:8265"
+      - "8639:8639"
+    profiles: ["docray-gpu"]
+    environment:
+      - STANDALONE_MODE=true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

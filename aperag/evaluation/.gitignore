@@ -1,0 +1,10 @@
+# Ignore user configuration (keep example only)
+config.yaml
+
+# Ignore evaluation reports
+evaluation_reports/
+*.csv
+*.json
+
+# Keep example files
+!config.example.yaml

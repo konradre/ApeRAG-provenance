@@ -1,0 +1,537 @@
+graphNode:
+  type: object
+  description: Knowledge graph node representing an entity
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the node (entity name)
+      example: "墨香居"
+    labels:
+      type: array
+      items:
+        type: string
+      description: Labels associated with the node
+      example: ["墨香居"]
+    properties:
+      type: object
+      description: Node properties containing entity metadata
+      properties:
+        entity_id:
+          type: string
+          description: Entity identifier
+          example: "墨香居"
+        entity_type:
+          type: string
+          description: Type of the entity
+          example: "organization"
+        description:
+          type: string
+          description: Description of the entity
+          example: "墨香居是这条老巷子里唯一的旧书店，经营着各种书籍，承载了老板李明华的情怀。"
+        source_id:
+          type: string
+          description: Source chunk ID where entity was extracted
+          example: "chunk-88845945407136e9498f5f594c8a00c6"
+        file_path:
+          type: string
+          description: Source file path
+          example: "story.txt"
+        created_at:
+          type: integer
+          format: int64
+          description: Creation timestamp
+          example: 1751356233
+      additionalProperties: true
+  required:
+    - id
+    - labels
+    - properties
+
+graphEdge:
+  type: object
+  description: Knowledge graph edge representing a relationship
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the edge
+      example: "墨香居-深夜读书会"
+    type:
+      type: string
+      description: Type of the relationship
+      example: "DIRECTED"
+      default: "DIRECTED"
+    source:
+      type: string
+      description: Source node ID
+      example: "墨香居"
+    target:
+      type: string
+      description: Target node ID
+      example: "深夜读书会"
+    properties:
+      type: object
+      description: Edge properties containing relationship metadata
+      properties:
+        weight:
+          type: number
+          format: float
+          description: Relationship weight/strength
+          example: 9.0
+        description:
+          type: string
+          description: Description of the relationship
+          example: "深夜读书会是墨香居的新活动，旨在提升书店的活力和吸引顾客。"
+        keywords:
+          type: string
+          description: Keywords associated with the relationship
+          example: "书店活力,活动"
+        source_id:
+          type: string
+          description: Source chunk ID where relationship was extracted
+          example: "chunk-88845945407136e9498f5f594c8a00c6"
+        file_path:
+          type: string
+          description: Source file path
+          example: "story.txt"
+        created_at:
+          type: integer
+          format: int64
+          description: Creation timestamp
+          example: 1751356233
+      additionalProperties: true
+  required:
+    - id
+    - source
+    - target
+    - properties
+
+knowledgeGraph:
+  type: object
+  description: Knowledge graph containing nodes and edges
+  properties:
+    nodes:
+      type: array
+      items:
+        $ref: '#/graphNode'
+      description: List of nodes in the knowledge graph
+    edges:
+      type: array
+      items:
+        $ref: '#/graphEdge'
+      description: List of edges in the knowledge graph
+    is_truncated:
+      type: boolean
+      description: Whether the graph was truncated due to size limits
+      example: false
+      default: false
+  required:
+    - nodes
+    - edges
+    - is_truncated
+
+graphLabelsResponse:
+  type: object
+  description: Response containing available graph labels
+  properties:
+    labels:
+      type: array
+      items:
+        type: string
+      description: List of available node labels in the knowledge graph
+      example: ["墨香居", "李明华", "林晓雯", "深夜读书会"]
+  required:
+    - labels 
+
+targetEntityDataRequest:
+  type: object
+  description: Optional target entity configuration. If not specified, auto-select entity with highest degree.
+  properties:
+    entity_name:
+      type: string
+      description: Target entity name. If not specified, auto-select entity with highest degree
+    entity_type:
+      type: string
+      description: Entity type for the target entity
+    description:
+      type: string
+      description: Description for the target entity
+    source_id:
+      type: string
+      description: Source ID for the target entity
+    file_path:
+      type: string
+      description: File path for the target entity
+  nullable: true
+
+targetEntityDataResponse:
+  type: object
+  description: Complete data of the target entity after merge
+  properties:
+    entity_name:
+      type: string
+      description: The entity name that was kept (merge target)
+      example: "墨香居"
+    entity_type:
+      type: string
+      description: Entity type of the target entity
+      example: "ORGANIZATION"
+    description:
+      type: string
+      description: Merged description of the target entity
+      example: "墨香居是这条老巷子里唯一的旧书店，经营着各种书籍，承载了老板李明华的情怀。"
+    source_id:
+      type: string
+      description: Source ID information
+      example: "chunk-001,chunk-002"
+    file_path:
+      type: string
+      description: File path information
+      example: "story.txt,book.txt"
+  required:
+    - entity_name
+    - entity_type
+    - description
+
+nodeMergeRequest:
+  type: object
+  description: |
+    Request to merge multiple graph nodes directly using entity IDs.
+  properties:
+    entity_ids:
+      type: array
+      items:
+        type: string
+      description: List of entity IDs to merge directly
+      example: ["墨香居", "书店", "旧书店"]
+      minItems: 1
+    target_entity_data:
+      $ref: '#/targetEntityDataRequest'
+  required:
+    - entity_ids
+  additionalProperties: false
+  example:
+    entity_ids: ["墨香居", "书店", "旧书店"]
+
+nodeMergeResponse:
+  type: object
+  description: Response containing node merge results
+  properties:
+    status:
+      type: string
+      description: Status of the merge operation
+      example: "success"
+      enum: ["success", "error"]
+    message:
+      type: string
+      description: Detailed message about the merge operation
+      example: "Successfully merged 2 entities into 墨香居"
+    entity_ids:
+      type: array
+      items:
+        type: string
+      description: Entity IDs that were merged
+      example: ["墨香居", "书店", "旧书店"]
+    target_entity_data:
+      $ref: '#/targetEntityDataResponse'
+    source_entities:
+      type: array
+      items:
+        type: string
+      description: List of entities that were merged into the target
+      example: ["书店", "旧书店"]
+    redirected_edges:
+      type: integer
+      description: Number of edges that were redirected during merge
+      example: 12
+      minimum: 0
+    merged_description_length:
+      type: integer
+      description: Length of the merged description
+      example: 512
+      minimum: 0
+    suggestion_id:
+      type: string
+      description: Suggestion ID if this merge was based on a suggestion
+      example: "msug123"
+      nullable: true
+  required:
+    - status
+    - message
+    - entity_ids
+    - target_entity_data
+    - source_entities
+    - redirected_edges
+    - merged_description_length
+
+mergeSuggestionEntity:
+  type: object
+  description: Entity information in merge suggestion
+  properties:
+    entity_id:
+      type: string
+      description: Entity ID
+      example: "墨香居"
+    entity_name:
+      type: string
+      description: Entity name
+      example: "墨香居"
+    entity_type:
+      type: string
+      description: Entity type
+      example: "ORGANIZATION"
+    description:
+      type: string
+      description: Entity description
+      example: "这条老巷子里唯一的旧书店"
+    degree:
+      type: integer
+      description: Node degree (number of connections)
+      example: 8
+      nullable: true
+  required:
+    - entity_id
+    - entity_name
+    - entity_type
+    - description
+
+mergeSuggestionTargetEntity:
+  type: object
+  description: Suggested target entity for merge
+  properties:
+    entity_name:
+      type: string
+      description: Suggested entity name after merge
+      example: "墨香居"
+    entity_type:
+      type: string
+      description: Suggested entity type after merge
+      example: "ORGANIZATION"
+  required:
+    - entity_name
+    - entity_type
+
+mergeSuggestion:
+  type: object
+  description: Node merge suggestion
+  properties:
+    entities:
+      type: array
+      items:
+        $ref: '#/mergeSuggestionEntity'
+      description: List of entities suggested for merging
+      minItems: 2
+    confidence_score:
+      type: number
+      format: float
+      minimum: 0.0
+      maximum: 1.0
+      description: LLM confidence score for this merge suggestion
+      example: 0.85
+    merge_reason:
+      type: string
+      description: LLM-generated reason for suggesting this merge
+      example: "两个实体都描述同一个书店，'墨香居'是具体名称，'旧书店'是通用描述，应该合并为同一实体"
+    suggested_target_entity:
+      $ref: '#/mergeSuggestionTargetEntity'
+  required:
+    - entities
+    - confidence_score
+    - merge_reason
+    - suggested_target_entity
+
+mergeSuggestionsRequest:
+  type: object
+  description: Request for generating node merge suggestions
+  properties:
+    max_suggestions:
+      type: integer
+      minimum: 1
+      maximum: 100
+      default: 50
+      description: Maximum number of merge suggestions to return
+      example: 50
+    max_concurrent_llm_calls:
+      type: integer
+      minimum: 1
+      maximum: 16
+      default: 4
+      description: Maximum number of concurrent LLM calls for batch analysis
+      example: 4
+    force_refresh:
+      type: boolean
+      default: false
+      description: Force regeneration of suggestions even if valid cached suggestions exist
+      example: false
+
+mergeSuggestionItem:
+  type: object
+  description: Individual merge suggestion item
+  properties:
+    id:
+      type: string
+      description: Suggestion ID
+      example: "msug123"
+    collection_id:
+      type: string
+      description: Collection ID
+      example: "col123"
+    suggestion_batch_id:
+      type: string
+      description: Suggestion batch ID
+      example: "batch456"
+    entity_ids:
+      type: array
+      items:
+        type: string
+      description: Entity IDs suggested for merging
+      example: ["墨香居", "书店", "旧书店"]
+    confidence_score:
+      type: number
+      format: float
+      minimum: 0.0
+      maximum: 1.0
+      description: LLM confidence score for this merge suggestion
+      example: 0.85
+    merge_reason:
+      type: string
+      description: LLM-generated reason for suggesting this merge
+      example: "两个实体都描述同一个书店，'墨香居'是具体名称，'旧书店'是通用描述，应该合并为同一实体"
+    suggested_target_entity:
+      $ref: '#/mergeSuggestionTargetEntity'
+    status:
+      type: string
+      enum: ["PENDING", "ACCEPTED", "REJECTED", "EXPIRED"]
+      description: Status of the suggestion
+      example: "PENDING"
+    created:
+      type: string
+      format: date-time
+      description: Creation timestamp
+      example: "2025-01-07T10:00:00Z"
+    operated_at:
+      type: string
+      format: date-time
+      description: User operation timestamp
+      example: "2025-01-08T15:30:00Z"
+      nullable: true
+  required:
+    - id
+    - collection_id
+    - suggestion_batch_id
+    - entity_ids
+    - confidence_score
+    - merge_reason
+    - suggested_target_entity
+    - status
+    - created
+
+mergeSuggestionsResponse:
+  type: object
+  description: Response containing node merge suggestions
+  properties:
+    suggestions:
+      type: array
+      items:
+        $ref: '#/mergeSuggestionItem'
+      description: List of merge suggestions ordered by confidence score (highest first)
+    total_analyzed_nodes:
+      type: integer
+      description: Total number of nodes analyzed
+      example: 156
+      minimum: 0
+    processing_time_seconds:
+      type: number
+      format: float
+      description: Processing time in seconds
+      example: 12.5
+      minimum: 0.0
+    from_cache:
+      type: boolean
+      description: Whether suggestions were loaded from cache
+      example: false
+      default: false
+    generated_at:
+      type: string
+      format: date-time
+      description: Generation timestamp
+      example: "2025-01-07T10:00:00Z"
+    total_suggestions:
+      type: integer
+      description: Total number of suggestions
+      example: 5
+      minimum: 0
+    pending_count:
+      type: integer
+      description: Number of pending suggestions
+      example: 3
+      minimum: 0
+    accepted_count:
+      type: integer
+      description: Number of accepted suggestions
+      example: 1
+      minimum: 0
+    rejected_count:
+      type: integer
+      description: Number of rejected suggestions
+      example: 1
+      minimum: 0
+  required:
+    - suggestions
+    - total_analyzed_nodes
+    - processing_time_seconds
+    - from_cache
+    - generated_at
+    - total_suggestions
+    - pending_count
+    - accepted_count
+    - rejected_count
+
+suggestionActionRequest:
+  type: object
+  description: Request to take action on a merge suggestion
+  properties:
+    action:
+      type: string
+      enum: ["accept", "reject"]
+      description: Action to take on the suggestion (case-insensitive, e.g., 'Accept', 'REJECT', 'accept')
+      example: "accept"
+    target_entity_data:
+      $ref: '#/targetEntityDataRequest'
+      description: Optional override for target entity data (only used when action is 'accept')
+  required:
+    - action
+  additionalProperties: false
+  example:
+    action: "accept"
+
+suggestionActionResponse:
+  type: object
+  description: Response containing suggestion action results
+  properties:
+    status:
+      type: string
+      description: Status of the action operation
+      example: "success"
+      enum: ["success", "error"]
+    message:
+      type: string
+      description: Detailed message about the action operation
+      example: "Suggestion msug123 has been accepted and merge completed"
+    suggestion_id:
+      type: string
+      description: The suggestion ID that was processed
+      example: "msug123"
+    action:
+      type: string
+      enum: ["accept", "reject"]
+      description: The action that was performed (normalized to lowercase)
+      example: "accept"
+    merge_result:
+      $ref: '#/nodeMergeResponse'
+      description: Merge operation result (only present when action is 'accept')
+      nullable: true
+  required:
+    - status
+    - message
+    - suggestion_id
+    - action

@@ -1,0 +1,18 @@
+feedback:
+  type: object
+  properties:
+    type:
+      type: string
+      enum:
+        - good
+        - bad
+    tag:
+      type: string
+      enum:
+        - Harmful
+        - Unsafe
+        - Fake
+        - Unhelpful
+        - Other
+    message:
+      type: string

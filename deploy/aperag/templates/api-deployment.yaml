@@ -1,0 +1,195 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml -c -o deploy/aperag
+    kompose.version: 1.26.0 (40646f47)
+  labels:
+    {{- include "aperag.labels" . | nindent 4 }}
+  name: api
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aperag.selectorLabels" . | nindent 6 }}
+      {{- include "api.labels" . | nindent 6 }}
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "aperag.selectorLabels" . | nindent 8 }}
+        {{- include "api.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p /data/.cache
+              mkdir -p /root/.cache
+              ln -s /data/.cache/huggingface /root/.cache/
+              ln -s /data/.cache/torch /root/.cache/
+              /app/scripts/entrypoint.sh /app/scripts/start-api.sh
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
+              value: python
+            - name: JWT_SECRET
+              value: {{ .Values.api.env.JWT_SECRET | quote }}
+            - name: OAUTH_REDIRECT_URL
+              value: {{ .Values.api.env.OAUTH_REDIRECT_URL | quote }}
+            - name: GOOGLE_OAUTH_CLIENT_ID
+              value: {{ .Values.api.env.GOOGLE_OAUTH_CLIENT_ID | quote }}
+            - name: GOOGLE_OAUTH_CLIENT_SECRET
+              value: {{ .Values.api.env.GOOGLE_OAUTH_CLIENT_SECRET | quote }}
+            - name: GITHUB_OAUTH_CLIENT_ID
+              value: {{ .Values.api.env.GITHUB_OAUTH_CLIENT_ID | quote }}
+            - name: GITHUB_OAUTH_CLIENT_SECRET
+              value: {{ .Values.api.env.GITHUB_OAUTH_CLIENT_SECRET | quote }}
+            {{- if .Values.postgres.enabled }}
+            - name: POSTGRES_HOST
+              value: {{ .Values.postgres.POSTGRES_HOST | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgres.POSTGRES_PORT | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.POSTGRES_DB | quote }}
+            - name: POSTGRES_USER
+              {{- if .Values.postgres.POSTGRES_CREDENTIALS_SECRET_NAME }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.POSTGRES_CREDENTIALS_SECRET_NAME }}
+                  key: username
+              {{- else }}
+              value: {{ .Values.postgres.POSTGRES_USER | default "postgres" | quote }}
+              {{- end }}
+            - name: POSTGRES_PASSWORD
+              {{- if .Values.postgres.POSTGRES_CREDENTIALS_SECRET_NAME }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.POSTGRES_CREDENTIALS_SECRET_NAME }}
+                  key: password
+              {{- else }}
+              value: {{ .Values.postgres.POSTGRES_PASSWORD | default "postgres" | quote }}
+              {{- end }}
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_HOST
+              value: {{ .Values.redis.REDIS_HOST | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.redis.REDIS_PORT | quote }}
+            - name: REDIS_USER
+              {{- if .Values.redis.REDIS_CREDENTIALS_SECRET_NAME }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.REDIS_CREDENTIALS_SECRET_NAME }}
+                  key: username
+              {{- else }}
+              value: {{ .Values.redis.REDIS_USER | default "default" | quote }}
+              {{- end }}
+            - name: REDIS_PASSWORD
+              {{- if .Values.redis.REDIS_CREDENTIALS_SECRET_NAME }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.REDIS_CREDENTIALS_SECRET_NAME }}
+                  key: password
+              {{- else }}
+              value: {{ .Values.redis.REDIS_PASSWORD | default "redis" | quote }}
+              {{- end }}
+            {{- end }}
+            {{- if .Values.elasticsearch.enabled }}
+            - name: ES_HOST_NAME
+              value: {{ .Values.elasticsearch.ES_HOST | quote }}
+            - name: ES_PORT
+              value: {{ .Values.elasticsearch.ES_PORT | default "9200" | quote }}
+            - name: ES_PROTOCOL
+              value: {{ .Values.elasticsearch.ES_PROTOCOL | default "http" | quote }}
+            {{- if .Values.elasticsearch.ES_CREDENTIALS_SECRET_NAME }}
+            - name: ES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.elasticsearch.ES_CREDENTIALS_SECRET_NAME }}
+                  key: username
+            - name: ES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.elasticsearch.ES_CREDENTIALS_SECRET_NAME }}
+                  key: password
+            {{- else if .Values.elasticsearch.ES_USER }}
+            - name: ES_USER
+              value: {{ .Values.elasticsearch.ES_USER | quote }}
+            - name: ES_PASSWORD
+              value: {{ .Values.elasticsearch.ES_PASSWORD | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.neo4j.enabled }}
+            - name: NEO4J_HOST
+              value: {{ .Values.neo4j.NEO4J_HOST | quote }}
+            - name: NEO4J_PORT
+              value: {{ .Values.neo4j.NEO4J_PORT | default "7687" | quote }}
+            - name: NEO4J_USERNAME
+              {{- if .Values.neo4j.NEO4J_CREDENTIALS_SECRET_NAME }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.neo4j.NEO4J_CREDENTIALS_SECRET_NAME }}
+                  key: username
+              {{- else }}
+              value: {{ .Values.neo4j.NEO4J_USERNAME | default "neo4j" | quote }}
+              {{- end }}
+            - name: NEO4J_PASSWORD
+              {{- if .Values.neo4j.NEO4J_CREDENTIALS_SECRET_NAME }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.neo4j.NEO4J_CREDENTIALS_SECRET_NAME }}
+                  key: password
+              {{- else }}
+              value: {{ .Values.neo4j.NEO4J_PASSWORD | default "neo4j" | quote }}
+              {{- end }}
+            {{- end }}
+
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          name: aperag-api
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          {{- with .Values.api.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /data
+              name: data
+            - name: env-config
+              mountPath: /app/.env
+              subPath: .env
+              readOnly: true
+      restartPolicy: Always
+      {{- with .Values.api.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        # shared uploaded files between api and celery
+        - name: data
+          hostPath:
+            path: {{ .Values.api.dataPath }}
+        - name: env-config
+          secret:
+            secretName: aperag-env

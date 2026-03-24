@@ -1,0 +1,574 @@
+{
+  "admin_config": {
+    "metadata": {
+      "title": "系统配置",
+      "description": "本模块允许管理员定义和管理适用于整个平台的全局设置。这些全局参数控制系统核心功能、安全策略、性能阈值及其他关键配置项。"
+    },
+    "mineru_api": "启用 MinerU API",
+    "mineru_api_description": "启用后，系统将优先使用 MinerU API 进行文档解析，以提升解析质量与速度",
+    "mineru_api_token": "MinerU API 令牌",
+    "mineru_api_token_tips": "提示：官方 MinerU API 令牌有效期为14天，请于到期前更换",
+    "check": "验证",
+    "mineru_api_token_required": "请输入MinerU API Token",
+    "mineru_api_token_invalid": "无效的token",
+    "use_doc_ray": "启用 doc-ray",
+    "use_doc_ray_description": "启用后，系统将使用 doc-ray 进行文档解析。",
+    "use_markitdown": "启用 markitdown",
+    "use_markitdown_description": "启用后，系统将使用 markitdown 进行文档解析。",
+    "system_default_quota": "用户默认配额",
+    "system_default_quota_description": "默认配额有助于维护系统稳定性，防止资源滥用，并确保用户或应用间的公平分配"
+  },
+  "admin_users": {
+    "metadata": {
+      "title": "用户管理",
+      "description": "该模块允许管理员通过安全访问配置集中控制和管理系统所有用户，高效管理组织内的身份、权限和认证策略。"
+    },
+    "search": "搜索用户",
+    "user_name": "用户",
+    "user_role": "角色",
+    "user_status": "状态",
+    "user_source": "来源",
+    "user_creation_time": "创建时间",
+    "user_quotas": "用户配额",
+    "user_quotas_recalculate": "重新计算",
+    "user_logs": "审计日志",
+    "user_delete": "删除"
+  },
+  "common": {
+    "site": {
+      "metadata": {
+        "applicationName": "ApeRAG",
+        "authors": {
+          "url": "https://github.com/apecloud/ApeRAG",
+          "name": "ApeCloud"
+        },
+        "title": "ApeRAG",
+        "description": ""
+      }
+    },
+    "action": {
+      "save": "保存",
+      "cancel": "取消",
+      "continue": "继续",
+      "update": "更新"
+    },
+    "tips": {
+      "confirm": "请确认操作",
+      "update_success": "更新成功.",
+      "create_success": "创建成功.",
+      "delete_success": "删除成功.",
+      "save_success": "保存成功"
+    }
+  },
+  "components": {
+    "dmermaid": {
+      "graph": "流程拓扑",
+      "data": "数据"
+    },
+    "copy_to_clipboard": {
+      "copied": "复制成功"
+    },
+    "datetime_picker_24h": {
+      "clear": "清除",
+      "close": "关闭",
+      "now": "现在"
+    },
+    "datagrid": {
+      "empty": "没有数据"
+    },
+    "pagination": {
+      "per_page": "每页条数",
+      "page_info": "第{page}页，共{total}页"
+    }
+  },
+  "page_api_keys": {
+    "metadata": {
+      "title": "API密钥",
+      "description": "支持安全存储、更新和管理不同AI服务（如OpenAI、Anthropic、Gemini等）的API密钥。关联密钥既可实现个性化AI交互，又能确保凭证安全。"
+    },
+    "description": "描述信息",
+    "search_api_keys": "搜索密钥",
+    "creation_time": "创建时间",
+    "last_used_time": "最后使用时间",
+    "api_keys": "API密钥",
+    "api_key_placeholder": "请描述该API密钥的用途",
+    "api_key_description": "API密钥需严格保密（如存储在环境变量中），避免被恶意利用或产生意外费用",
+    "add_api_keys": "创建API密钥",
+    "edit_api_keys": "编辑",
+    "delete_api_key": "删除API密钥",
+    "delete_api_key_confirm": "确认删除此API密钥？"
+  },
+  "page_audit_logs": {
+    "metadata": {
+      "title": "审计日志",
+      "description": "通过审计日志跟踪和审查所有关键系统活动—、API调用和管理变更，确保透明度、安全性和合规性。"
+    },
+    "search_placeholder": "按API名称搜索",
+    "status": "状态",
+    "duration": "持续时间",
+    "start_time": "开始时间"
+  },
+  "page_auth": {
+    "account": "我的账号",
+    "administrator": "系统管理",
+    "docs": "帮助文档",
+    "username": "用户名",
+    "username_placeholder": "用户名",
+    "password": "密码",
+    "password_placeholder": "密码",
+    "email": "邮箱",
+    "email_placeholder": "邮箱",
+    "signin": "登录",
+    "login_in_with_a_third_party_account": "使用第三方账号登录",
+    "login_with_google": "Google账号",
+    "login_with_github": "GitHub账号",
+    "or_continue_with": "或者",
+    "welcome_back": "欢迎回来",
+    "forgot_your_password": "忘记密码",
+    "do_not_have_an_account": "没有账号？ ",
+    "signup": "注册",
+    "register_an_account": "注册账号",
+    "already_hava_an_account": "已有账号？ ",
+    "signout": "退出",
+    "processing_oauth_login": "处理OAuth登录中...",
+    "oauth_successful": "OAuth认证成功",
+    "the_system_will_automatically_redirect": "系统将自动跳转，请稍后...",
+    "authentication": "身份验证",
+    "go_back_home": "返回首页",
+    "retry": "重试",
+    "oauth_verification_failed": "OAuth验证失败",
+    "an_unexpected_error_occurred": "发生未预期的错误"
+  },
+  "page_bot": {
+    "metadata": {
+      "title": "应用",
+      "description": "ApeRAG 是一种基于本地数据集并利用多种大型语言模型的新型聊天机器人。"
+    },
+    "search": "搜索应用",
+    "new_bot": "新建应用",
+    "bot_settings": "应用设置",
+    "delete_bot": "删除应用",
+    "delete_bot_confirm": "删除应用将会删除此应用下的所有会话，请确认操作！",
+    "no_bots_found": "没有可用的应用",
+    "no_description_available": "没有可用的描述",
+    "general": "基本设置",
+    "model_config": "模型设置",
+    "title": "标题",
+    "title_placeholder": "应用标题",
+    "description": "应用描述",
+    "description_placeholder": "请简单介绍一下应用用途",
+    "collection": "知识库",
+    "collection_placeholder": "选择知识库",
+    "no_collection_found": "没有可用的知识库",
+    "model": "模型",
+    "model_description": "设置默认模型将作为所有新会话的默认模型。",
+    "system_prompt_template": "系统提示模板",
+    "system_prompt_template_placeholder": "系统提示模板",
+    "system_prompt_template_description": "用于定义AI的角色和行为规则，为对话设定整体框架和上下文。",
+    "query_prompt_template": "查询提示模板",
+    "query_prompt_template_placeholder": "查询提示模板",
+    "query_prompt_template_description": "是用户输入的具体问题或指令，AI会基于系统提示的约束对其进行处理和响应。",
+    "restore_to_default": "设置为默认模版"
+  },
+  "page_chat": {
+    "metadata": {
+      "title": "会话"
+    },
+    "hello_world": "Hi, I'm ApeRAG.",
+    "rag_description": "ApeRAG是一个结合图检索、向量搜索和全文搜索技术，提供混合检索、知识管理和企业AI应用解决方案。",
+    "mention_a_collection": "输入@关联相关知识库...",
+    "display_empty_title": "新会话",
+    "no_collection_was_found": "未找到相关知识库",
+    "web_search": "网络检索",
+    "web_search_is_enabled": "网络检索已启用",
+    "web_search_is_disabled": "网络检索已禁用",
+    "references": "参考文献",
+    "feedback": {
+      "title": "反馈意见",
+      "choose_a_category": "请选择反馈类别",
+      "Harmful": {
+        "title": "有害内容",
+        "description": "宣扬危险、暴力或歧视性行为"
+      },
+      "Unsafe": {
+        "title": "安全隐患",
+        "description": "包含风险或人身危险信息"
+      },
+      "Fake": {
+        "title": "虚假信息",
+        "description": "故意虚假、欺骗性或误导性内容"
+      },
+      "Unhelpful": {
+        "title": "内容不佳",
+        "description": "无关、解释不清或未能解答问题"
+      },
+      "Other": {
+        "title": "其他问题",
+        "description": "上述类别未涵盖的其他问题"
+      },
+      "share_your_feedback": "分享您的反馈",
+      "share_your_feedback_placeholder": "请提供反馈意见，帮助我们持续改进体验"
+    }
+  },
+  "page_collection_new": {
+    "metadata": {
+      "title": "添加知识库",
+      "description": "通过导入并系统化整理数据源至结构化数据集中，可显著提升大语言模型（LLMs）的上下文理解能力和响应准确性。"
+    }
+  },
+  "page_collections": {
+    "metadata": {
+      "title": "我的知识库",
+      "description": "通过导入并系统化整理数据源至结构化知识库中，可显著提升大语言模型（LLMs）的上下文理解能力和响应准确性"
+    },
+    "search": "搜索我的知识库",
+    "no_collections_found": "未找到知识库",
+    "general": "常规设置",
+    "settings": "设置",
+    "private": "私有",
+    "public": "公开",
+    "mine": "我的",
+    "subscribed": "已订阅",
+    "subscribe": "订阅",
+    "no_description_available": "没有可用的描述",
+    "create_collection": "创建知识库",
+    "update_collection": "更新知识库",
+    "delete_collection": "删除知识库",
+    "delete_collection_confirm": "此操作不可撤销。系统将永久删除该知识库，并从我们的服务器中移除所有相关文档。",
+    "publish_collection": "发布至市场",
+    "publish_collection_description": "允许用户发现并订阅您的知识库",
+    "unpublish_collection": "从市场下架",
+    "unpublish_collection_description": "将此知识库从市场中移除，转为私有状态",
+    "published_success": "已发布到市场",
+    "unpublished_success": "已从市场下架",
+    "name": "名称",
+    "name_placeholder": "知识库显示名称",
+    "language": "大模型语言",
+    "language_zh_CN": "中文",
+    "language_en_US": "英文",
+    "description": "描述",
+    "description_placeholder": "请简要描述该知识库的整体内容",
+    "index_types": "索引类型",
+    "index_types_description": "选择所需的AI索引能力，我们将为您的文档构建相应索引",
+    "index_type_VECTOR": {
+      "title": "向量索引",
+      "description": "将数据（文本、图像等）表示为高维向量，支持基于相似度的检索"
+    },
+    "index_type_FULLTEXT": {
+      "title": "全文索引",
+      "description": "使用倒排索引等技术对文本中的关键词建立索引，支持精确或模糊匹配"
+    },
+    "index_type_GRAPH": {
+      "title": "图索引",
+      "description": "以节点（实体）和边（关系）的形式存储数据，支持复杂关系查询"
+    },
+    "index_type_SUMMARY": {
+      "title": "摘要索引",
+      "description": "为长文档建立摘要或元数据索引而非原始内容，实现更快速的检索"
+    },
+    "index_type_VISION": {
+      "title": "视觉索引",
+      "description": "将视觉内容（图像/视频）编码为特征向量，支持基于内容的检索"
+    },
+    "required": "必选",
+    "model_settings": "模型设置",
+    "model_settings_description": "选择用于文档处理的AI模型。不同索引类型需要不同的模型支持",
+    "embedding_model": "嵌入模型（Embedding Model）",
+    "embedding_model_description": "嵌入模型能够将数据转换为数值向量，这些向量能够捕捉数据的语义信息及其相互关系。",
+    "completion_model": "补全模型（Completion Model）",
+    "completion_model_description": "补全模型能根据给定输入预测最可能的下文内容，从而生成新的文本。",
+    "export_knowledge_base": "导出知识库",
+    "export_knowledge_base_confirm_title": "导出知识库",
+    "export_knowledge_base_confirm_content": "将打包该知识库在对象存储中的全部内容，包括原始文件、解析产物、分块数据和图片。",
+    "export_knowledge_base_start": "开始导出",
+    "export_knowledge_base_processing_title": "正在导出知识库...",
+    "export_knowledge_base_progress_message": "正在下载文件：{current} / {total}",
+    "export_knowledge_base_completed_title": "导出完成！",
+    "export_knowledge_base_completed_description": "文件大小：{size}。文件将在 7 天后自动删除。",
+    "export_knowledge_base_download": "下载 ZIP",
+    "export_knowledge_base_failed_title": "导出失败",
+    "export_knowledge_base_failed_description": "导出过程中发生错误，请稍后重试。",
+    "export_knowledge_base_retry": "重试",
+    "export_knowledge_base_too_many_tasks": "已有导出任务进行中，请等待完成后重试。",
+    "export_knowledge_base_link_expired": "导出链接已过期，请重新导出。"
+  },
+  "page_docs": {
+    "metadata": {
+      "title": "文档"
+    }
+  },
+  "page_documents": {
+    "metadata": {
+      "title": "文档"
+    },
+    "add_documents": "添加文档",
+    "index_rebuild": "重建索引",
+    "index_rebuild_should_select_index_type": "请选择需要重建索引的类型",
+    "index_rebuild_failed": "重建失败的索引",
+    "index_rebuild_failed_success": "重建成功",
+    "index_rebuild_failed_confirm": "确定要重建所有失败的索引吗？",
+    "index_rebuild_tips": "您可以在“设置”中配置索引类型。",
+    "index_rebuild_with": "已启动以下索引类型的重建：{types}",
+    "delete_document": "删除文档",
+    "delete_document_confirm": "此操作不可撤销。文件将被永久删除，相关数据将从我们的服务器中彻底移除。",
+    "search_document": "搜索文档",
+    "upload": "上传",
+    "browse_files": "选择文件",
+    "save_to_collection": "添加到知识库",
+    "drag_drop_files_here": "拖拽文件至此处",
+    "or_click_to_browse_files": "或点击浏览（单个文件最大100MB）",
+    "last_updated": "最近更新",
+    "file": "文件",
+    "filename": "文件名",
+    "file_type": "文件类型",
+    "upload_progress": "进度",
+    "remove_file": "移除",
+    "clear_files": "清空"
+  },
+  "page_evaluation": {
+    "metadata": {
+      "title": "问题评测"
+    },
+    "search": "搜索评测历史",
+    "add_evaluation": "新增评测",
+    "delete_evaluation": "删除评测",
+    "delete_evaluation_confirm": "将会永久删除测评结果，并从服务器中移除您的评估数据。",
+    "retry_all_evaluation": "重新评测",
+    "retry_all_evaluation_confirm": "确定要对所有问题重新发起评测吗？",
+    "retry_failed_evaluation": "重试失败",
+    "retry_failed_evaluation_confirm": "确定对失败的记录重新发起评测吗？",
+    "evaluation_history": "评测历史",
+    "questions": "问题",
+    "avg_score": "平均分",
+    "evaluation_name": "评测名称",
+    "evaluation_name_placeholder": "请输入评测名称",
+    "collection": "知识库",
+    "collection_placeholder": "请选择一个知识库",
+    "add_collection": "添加知识库",
+    "question_set": "问题集",
+    "question_set_placeholder": "请选择一个问题集",
+    "add_question_set": "添加问题集",
+    "agent_llm": "Agent LLM",
+    "agent_llm_placeholder": "请选择一个Agent模型",
+    "judge_llm": "Judge LLM",
+    "judge_llm_placeholder": "请选择一个Judge模型",
+    "ground_truth": "标准答案",
+    "rag_answer": "系统回答",
+    "judge_reason": "评测结论"
+  },
+  "page_graph": {
+    "metadata": {
+      "title": "知识图谱"
+    },
+    "node_group": "节点分组",
+    "node_search": "节点查询",
+    "no_nodes_found": "未找到相关节点",
+    "merge_infomation": "{count}个节点节点合并建议.",
+    "merge_suggestions": "节点合并",
+    "merge_accept": "接受",
+    "merge_reject": "拒绝",
+    "merge_accepted": "已接受",
+    "merge_rejected": "已拒绝",
+    "merge_pending": "待处理",
+    "entity_person": "人物",
+    "entity_category": "类别",
+    "entity_date": "日期",
+    "entity_product": "产品",
+    "entity_organization": "组织",
+    "entity_technology": "技术",
+    "entity_geo": "位置",
+    "entity_event": "事件",
+    "entity_UNKNOWN": "未知"
+  },
+  "page_marketplace": {
+    "metadata": {
+      "title": "市场",
+      "description": "探索并订阅社区分享的优质知识合集，拓展你的知识边界。"
+    },
+    "no_collections_found": "未找到相关知识库",
+    "no_description_available": "没有可用的描述",
+    "search": "搜索社区知识库"
+  },
+  "page_models": {
+    "metadata": {
+      "provider_title": "模型供应商",
+      "provider_description": "在此模块连接并定制您偏好的大型语言模型（LLM）供应商和模型。通过设置API密钥、选择模型及调整参数来提升AI使用体验。",
+      "model_title": "模型管理",
+      "model_description": "本模块支持连接并定制个性化的大型语言模型（LLM）供应商和模型。配置API密钥、选择模型及调整参数以优化AI体验。"
+    },
+    "provider": {
+      "search_placeholder": "搜索模型供应商",
+      "add_provider": "添加供应商",
+      "name": "名称",
+      "name_placeholder": "供应商显示名称",
+      "base_url": "API地址",
+      "base_url_placeholder": "API访问地址",
+      "base_url_description": "LLM API基础URL指用于访问大型语言模型（LLM）API服务的根端点地址。",
+      "api_dialect": "API类型",
+      "api_dialect_description": "补全API生成候选内容，嵌入API将内容转换为向量，重排API根据语义相关性优化内容排序。",
+      "models_count": "模型数量",
+      "scope": "可见范围",
+      "creation_time": "创建时间",
+      "enabled": "启用状态",
+      "confirm_disabled": "确定停用此模型供应商？",
+      "private": "私有",
+      "public": "公开",
+      "edit": "编辑",
+      "api_key": "API密钥",
+      "api_key_placeholder": "请输入模型供应商提供的API密钥",
+      "api_key_description": "要使用AI模型功能，需提供来自所选模型供应商的有效API密钥。该密钥作为安全认证凭证，允许系统在处理请求时保障隐私和使用控制。",
+      "edit_provider": "编辑供应商",
+      "delete": "删除",
+      "delete_confirm": "此操作不可逆。将永久删除供应商配置及相关数据。",
+      "publish": "发布为公开",
+      "publish_confirm": "确定将此供应商发布为公开？此操作不可逆，发布后将对所有用户可见。",
+      "publish_success": "供应商已发布为公开"
+    },
+    "model": {
+      "search_placeholder": "搜索模型",
+      "add_model": "添加模型",
+      "name": "模型名称",
+      "name_placeholder": "请输入模型名称",
+      "llm_params": "LLM参数",
+      "agent": "会话",
+      "collection": "知识库",
+      "api_type": "API类型",
+      "creation_time": "创建时间",
+      "edit": "编辑",
+      "edit_model": "模型设置",
+      "delete": "删除",
+      "delete_confirm": "此操作不可逆。将永久删除模型配置及相关数据。",
+      "custom_llm_provider": "LLM提供商",
+      "custom_llm_provider_placeholder": "请选择LLM提供商"
+    },
+    "default_model": {
+      "config": "默认模型配置",
+      "help": "清除选择将删除此场景的默认模型配置"
+    }
+  },
+  "page_prompts": {
+    "metadata": {
+      "title": "提示词管理",
+      "description": "自定义系统默认提示词，调整 AI 助手的行为和对话风格。修改后将覆盖系统默认配置，可随时重置恢复默认。"
+    },
+    "agent_system": {
+      "title": "系统提示词",
+      "description": "定义 AI 助手的人格、角色和行为准则，影响所有对话的基础行为。"
+    },
+    "agent_query": {
+      "title": "查询提示词",
+      "description": "每次对话的查询模板，控制如何将用户问题与知识库上下文组合后发送给 AI。"
+    },
+    "status": {
+      "customized": "已自定义",
+      "default": "使用默认"
+    },
+    "action": {
+      "save": "保存",
+      "reset": "重置为默认",
+      "reset_confirm": "确认将此提示词重置为系统默认？",
+      "reset_confirm_description": "重置后，当前自定义内容将被删除，恢复为系统内置默认提示词。"
+    },
+    "toast": {
+      "save_success": "提示词已保存",
+      "reset_success": "已重置为默认提示词"
+    }
+  },
+  "page_question_set": {
+    "metadata": {
+      "title": "问题集管理",
+      "description": "问题集是用于系统衡量效能与影响力的针对性评测问题集合"
+    },
+    "search": "搜索问题集",
+    "add_question_set": "新增问题集",
+    "update_question_set": "更新问题集",
+    "delete_question_set": "删除问题集",
+    "delete_question_set_confirm": "此操作不可撤销。将会永久删除该问题集，并从服务器中移除您的问题集数据。",
+    "question_set_name": "问题集名称",
+    "question_set_name_placeholder": "请输入问题集名称",
+    "question_set_description": "问题集描述",
+    "question_set_description_placeholder": "请输入问题集描述",
+    "add_question": "添加问题",
+    "add_question_manual": "手动添加",
+    "add_question_generator": "自动生成问题",
+    "add_question_import": "从文件导入",
+    "update_question": "更新问题",
+    "delete_question": "删除问提",
+    "delete_question_confirm": "此操作不可撤销，将会永久删除该问题。",
+    "question_content": "问题",
+    "question_content_placeholder": "请输入您的问题",
+    "ground_truth": "标准答案",
+    "ground_truth_placeholder": "请输入标准答案",
+    "no_question_found": "当前问题集内没有数据",
+    "question_count": "生成的问题数量",
+    "question_count_placeholder": "请输入问题数量",
+    "question_llm": "LLM 模型",
+    "question_llm_placeholder": "选择一个模型",
+    "prompt_template": "提示词模版",
+    "prompt_template_placeholder": "请输入提示词模版",
+    "prompt_template_tips": "以下变量将被系统替换：",
+    "prompt_template_document_content": "从知识库中提取的文档内容",
+    "prompt_template_number_of_question": "需要生成的问题数量"
+  },
+  "page_quota": {
+    "metadata": {
+      "title": "配额管理",
+      "description": "在此模块管理AI模型使用量、API调用次数等资源的额度限制。配额功能帮助您控制成本、防止过度使用并优化使用体验。"
+    },
+    "limit": "限额",
+    "usage": "用量",
+    "bot_count": {
+      "title": "机器人数量",
+      "description": "系统内同时活跃的机器人数量上限，防止资源过度使用并确保系统稳定性。"
+    },
+    "collection_count": {
+      "title": "知识库数量",
+      "description": "允许创建的最大知识库数量。"
+    },
+    "document_count": {
+      "title": "总文档数量",
+      "description": "限定所有集合中文档的总数量，统筹管理整体存储容量。"
+    },
+    "documents_per_collection": {
+      "title": "单知识库文档数",
+      "description": "限制每个知识库内的文档数量，优化查询性能并保持数据均衡分布。"
+    },
+    "max_document_count_per_collection": "单知识库文档数",
+    "max_document_count": "总文档数量",
+    "max_collection_count": "知识库数量",
+    "max_bot_count": "机器人数量"
+  },
+  "page_search": {
+    "metadata": {
+      "title": "检索测试"
+    },
+    "search": "搜索",
+    "test": "测试",
+    "questions": "问题",
+    "questions_placeholder": "描述您的问题...",
+    "creation_time": "创建时间",
+    "search_result": "检索结果",
+    "delete": "删除",
+    "delete_confirm": "此操作不可撤销。搜索结果将被永久删除。",
+    "vector_search": "向量检索",
+    "fulltext_search": "全文检索",
+    "graph_search": "图检索",
+    "summary_search": "摘要检索"
+  },
+  "sidebar_workspace": {
+    "repositories": "知识库",
+    "marketplace": "市场",
+    "collections": "我的知识库",
+    "bots": "机器人",
+    "chats": "会话",
+    "chats_new": "新建会话",
+    "display_empty_title": "新会话",
+    "more": "更多",
+    "settings": "设置",
+    "models": "模型",
+    "api_keys": "API密钥",
+    "audit_logs": "审计日志",
+    "quotas": "配额",
+    "prompts": "提示词"
+  }
+}

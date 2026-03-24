@@ -1,0 +1,570 @@
+{
+  "admin_config": {
+    "metadata": {
+      "title": "Configuration",
+      "description": "This section allows administrators to define and manage system-wide settings that apply across the entire platform. These global parameters control core functionalities, security policies, performance thresholds, and other critical configurations."
+    },
+    "mineru_api": "Use MinerU API",
+    "mineru_api_description": "When enabled, the system will prioritize using the MinerU API for document parsing to improve parsing quality and speed.",
+    "mineru_api_token": "MinerU API Token",
+    "mineru_api_token_tips": "Tips: The official MinerU API Token is valid for 14 days, please replace it before it expires.",
+    "check": "Check",
+    "mineru_api_token_required": "MinerU API Token is required.",
+    "mineru_api_token_invalid": "Invalid token",
+    "use_doc_ray": "Use doc-ray",
+    "use_doc_ray_description": "When enabled, the system will use doc-ray for document parsing.",
+    "use_markitdown": "Use markitdown",
+    "use_markitdown_description": "When enabled, the system will use markitdown for document parsing.",
+    "system_default_quota": "User default quotas",
+    "system_default_quota_description": "These default quotas help maintain system stability, prevent resource abuse, and ensure fair allocation across users or applications."
+  },
+  "admin_users": {
+    "metadata": {
+      "title": "User Management",
+      "description": "This module enables administrators to centrally control and organize all system users with secure access configurations. Efficiently manage identities, permissions, and authentication policies across your organization."
+    },
+    "search": "Search users",
+    "user_name": "User",
+    "user_role": "Role",
+    "user_status": "Status",
+    "user_source": "Source",
+    "user_creation_time": "Creation time",
+    "user_quotas": "Quotas",
+    "user_quotas_recalculate": "Recalculate",
+    "user_logs": "Audit logs",
+    "user_delete": "Delete"
+  },
+  "common": {
+    "site": {
+      "metadata": {
+        "applicationName": "ApeRAG",
+        "authors": {
+          "url": "https://github.com/apecloud/ApeRAG",
+          "name": "ApeCloud"
+        },
+        "title": "ApeRAG",
+        "description": "Production-Ready RAG Platform with Graph, Vector & Full-Text Search."
+      }
+    },
+    "action": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "continue": "Continue",
+      "update": "Update"
+    },
+    "tips": {
+      "confirm": "Are you absolutely sure?",
+      "update_success": "update successfully.",
+      "create_success": "create successfully.",
+      "delete_success": "Delete successfully!",
+      "save_success": "Save successfully!"
+    }
+  },
+  "components": {
+    "dmermaid": {
+      "graph": "Graph",
+      "data": "Data"
+    },
+    "copy_to_clipboard": {
+      "copied": "Copied"
+    },
+    "datetime_picker_24h": {
+      "clear": "Clear",
+      "close": "Close",
+      "now": "Now"
+    },
+    "datagrid": {
+      "empty": "No results."
+    },
+    "pagination": {
+      "per_page": "Rows per page",
+      "page_info": "Page {page} of {total}"
+    }
+  },
+  "page_api_keys": {
+    "metadata": {
+      "title": "API keys",
+      "description": "This section allows you to securely store, update, and manage API keys for different AI services (such as OpenAI, Anthropic, Gemini, etc.). Connecting your keys enables personalized AI interactions while keeping your credentials protected."
+    },
+    "description": "Description",
+    "search_api_keys": "Search",
+    "creation_time": "Creation time",
+    "last_used_time": "Last used time",
+    "api_keys": "API Keys",
+    "api_key_placeholder": "Please describe the purpose of an Api Key.",
+    "api_key_description": "API keys must be kept confidential (e.g., stored in environment variables) to avoid exploitation or unexpected charges.",
+    "add_api_keys": "Create Api Key",
+    "edit_api_keys": "Edit",
+    "delete_api_key": "Delete Api Key",
+    "delete_api_key_confirm": "Confirm deletion of the API key?"
+  },
+  "page_audit_logs": {
+    "metadata": {
+      "title": "Audit Logs",
+      "description": "Track and review all critical system activities with Audit Logs—a detailed record of user actions, API calls, and administrative changes. Ensure transparency, security, and compliance by monitoring who did what, when, and from where."
+    },
+    "search_placeholder": "Search by API Name",
+    "status": "Status",
+    "duration": "Duration",
+    "start_time": "Start Time"
+  },
+  "page_auth": {
+    "account": "Account",
+    "administrator": "Administrator",
+    "docs": "Documents",
+    "username": "Username",
+    "username_placeholder": "Username",
+    "password": "Password",
+    "password_placeholder": "Password",
+    "email": "邮箱",
+    "email_placeholder": "邮箱",
+    "signin": "Sign In",
+    "login_in_with_a_third_party_account": "Login with a third-party account",
+    "login_with_google": "Login with Google",
+    "login_with_github": "Login with GitHub",
+    "or_continue_with": "Or continue with",
+    "welcome_back": "Welcome back",
+    "forgot_your_password": "Forgot your password",
+    "do_not_have_an_account": "Don't have an account? ",
+    "signup": "Sign Up",
+    "register_an_account": "Register an account",
+    "already_hava_an_account": "Already have an account? ",
+    "signout": "Sign Out",
+    "processing_oauth_login": "Processing OAuth login...",
+    "oauth_successful": "OAuth successful",
+    "the_system_will_automatically_redirect": "the system will automatically redirect",
+    "authentication": "Authentication",
+    "go_back_home": "Go back home",
+    "retry": "Retry",
+    "oauth_verification_failed": "oauth_verification_failed",
+    "an_unexpected_error_occurred": "An unexpected error occurred"
+  },
+  "page_bot": {
+    "metadata": {
+      "title": "Applications",
+      "description": "ApeRAG is a new chatbot based on local datasets and utilizes multiple large language models."
+    },
+    "search": "Search application",
+    "new_bot": "Create application",
+    "bot_settings": "Application settings",
+    "delete_bot": "Delete",
+    "delete_bot_confirm": "Deleting the application will remove all sessions under this app. Please confirm the operation!",
+    "no_bots_found": "No application found",
+    "no_description_available": "No description available",
+    "general": "General",
+    "model_config": "Model Settings",
+    "title": "Title",
+    "title_placeholder": "Application title",
+    "description": "Description",
+    "description_placeholder": "Please briefly introduce the purpose of the application.",
+    "collection": "Collection",
+    "collection_placeholder": "Select a collection",
+    "no_collection_found": "No Collection found.",
+    "model": "Model",
+    "model_description": "Setting the default model will serve as the default model for all new sessions.",
+    "system_prompt_template": "System Prompt Template",
+    "system_prompt_template_placeholder": "System Prompt Template",
+    "system_prompt_template_description": "System Prompt defines the AI's role and behavioral rules, setting the overall context for the interaction.",
+    "query_prompt_template": "Query Prompt Template",
+    "query_prompt_template_placeholder": "Query Prompt Template",
+    "query_prompt_template_description": "Query Prompt represents the user's specific input or question, which the AI processes and responds to within the framework set by the System Prompt.",
+    "restore_to_default": "Restore to default"
+  },
+  "page_chat": {
+    "metadata": {
+      "title": "Chats"
+    },
+    "hello_world": "Hi, I'm ApeRAG.",
+    "rag_description": "ApeRAG is a production-ready RAG platform that combines graph, vector, and full-text search for hybrid retrieval, knowledge management, and enterprise AI applications.",
+    "mention_a_collection": "Type @ to mention a collection...",
+    "display_empty_title": "New chat",
+    "no_collection_was_found": "No collection was found",
+    "web_search": "Web search",
+    "web_search_is_enabled": "Web search is enabled",
+    "web_search_is_disabled": "Web search is disabled",
+    "references": "References",
+    "feedback": {
+      "title": "Tell Us What You Think",
+      "choose_a_category": "Please choose a category for your feedback below.",
+      "Harmful": {
+        "title": "Harmful",
+        "description": "Promotes dangerous, violent, or discriminatory acts."
+      },
+      "Unsafe": {
+        "title": "Unsafe",
+        "description": "Contains risky or physically dangerous information."
+      },
+      "Fake": {
+        "title": "Fake",
+        "description": "Intentionally false, deceptive, or misleading."
+      },
+      "Unhelpful": {
+        "title": "Unhelpful",
+        "description": "Irrelevant, poorly explained, or fails to address the query."
+      },
+      "Other": {
+        "title": "Other",
+        "description": "Any issue not covered by the categories above."
+      },
+      "share_your_feedback": "Share your feedback",
+      "share_your_feedback_placeholder": "Please provide your feedback so we can continue to enhance your experience."
+    }
+  },
+  "page_collection_new": {
+    "metadata": {
+      "title": "Add collection",
+      "description": "By importing and systematically organizing your data sources into a structured dataset, you can significantly improve the contextual understanding and response accuracy of large language models (LLMs)"
+    }
+  },
+  "page_collections": {
+    "metadata": {
+      "title": "Collections",
+      "description": "By importing and systematically organizing your data sources into a structured dataset, you can significantly improve the contextual understanding and response accuracy of large language models (LLMs)"
+    },
+    "search": "Search",
+    "no_collections_found": "No collections found",
+    "settings": "Settings",
+    "general": "General",
+    "private": "Private",
+    "public": "Public",
+    "mine": "Mine",
+    "subscribed": "Subscribed",
+    "subscribe": "Subscribe",
+    "no_description_available": "No description available",
+    "create_collection": "Create Collection",
+    "update_collection": "Update Collection",
+    "delete_collection": "Delete Collection",
+    "delete_collection_confirm": "This action cannot be undone. This will permanently delete collection and remove your documents from our servers.",
+    "publish_collection": "Publish to Marketplace",
+    "publish_collection_description": "Allow users to discover and subscribe to your collection.",
+    "published_success": "Collection published successfully",
+    "unpublished_success": "Collection unpublished successfully",
+    "unpublish_collection": "Unpublish from Marketplace",
+    "unpublish_collection_description": "Remove the collection from the marketplace, making it private.",
+    "name": "Name",
+    "name_placeholder": "Collection display name.",
+    "language": "Language",
+    "language_zh_CN": "Simplified chinese",
+    "language_en_US": "English",
+    "description": "Description",
+    "description_placeholder": "Please describe the general meaning of a collection.",
+    "index_types": "Index Types",
+    "index_types_description": "Select the AI capabilities you need, we will build corresponding indexes for your documents",
+    "index_type_VECTOR": {
+      "title": "Vector",
+      "description": "Represents data (text, images, etc.) as high-dimensional vectors to enable similarity-based retrieval."
+    },
+    "index_type_FULLTEXT": {
+      "title": "Fulltext",
+      "description": "Indexes keywords within text using techniques like inverted indexing for exact or fuzzy"
+    },
+    "index_type_GRAPH": {
+      "title": "Graph",
+      "description": "Stores data as nodes (entities) and edges (relationships), enabling complex relational"
+    },
+    "index_type_SUMMARY": {
+      "title": "Summary",
+      "description": "Indexes summaries or metadata of long documents instead of raw content for faster"
+    },
+    "index_type_VISION": {
+      "title": "Vision",
+      "description": "Encodes visual content (images/videos) into feature vectors for content-based retrieval."
+    },
+    "required": "Required",
+    "model_settings": "Model Settings",
+    "model_settings_description": "Select AI models for document processing. Different index types require different model support",
+    "embedding_model": "Embedding Model",
+    "embedding_model_description": "An embedding model translates data into numerical vectors that capture their semantic meaning and relationships.",
+    "completion_model": "Completion Model",
+    "completion_model_description": "A completion model is an AI that generates new content by predicting the most likely subsequent text based on a given input.",
+    "export_knowledge_base": "Export Knowledge Base",
+    "export_knowledge_base_confirm_title": "Export Knowledge Base",
+    "export_knowledge_base_confirm_content": "This will package all contents of this knowledge base from object storage, including original files, parsed artifacts, chunk data, and images.",
+    "export_knowledge_base_start": "Start Export",
+    "export_knowledge_base_processing_title": "Exporting Knowledge Base...",
+    "export_knowledge_base_progress_message": "Downloading files: {current} / {total}",
+    "export_knowledge_base_completed_title": "Export Complete!",
+    "export_knowledge_base_completed_description": "File size: {size}. The file will be automatically deleted after 7 days.",
+    "export_knowledge_base_download": "Download ZIP",
+    "export_knowledge_base_failed_title": "Export Failed",
+    "export_knowledge_base_failed_description": "An error occurred during export. Please try again.",
+    "export_knowledge_base_retry": "Retry",
+    "export_knowledge_base_too_many_tasks": "An export task is already in progress. Please wait for it to complete.",
+    "export_knowledge_base_link_expired": "The export link has expired. Please export again."
+  },
+  "page_docs": {
+    "metadata": {
+      "title": "Documents"
+    }
+  },
+  "page_documents": {
+    "metadata": {
+      "title": "Documents"
+    },
+    "add_documents": "Add Documents",
+    "index_rebuild": "Rebuild Index",
+    "index_rebuild_should_select_index_type": "You have to select at least one item.",
+    "index_rebuild_failed": "Rebuild Failed Index",
+    "index_rebuild_failed_success": "Rebuild successfully.",
+    "index_rebuild_failed_confirm": "Are you sure you want to rebuild all failed indexes?",
+    "index_rebuild_tips": "You can configure the index types in Settings.",
+    "index_rebuild_with": "Index rebuild initiated for types: {types}",
+    "delete_document": "Delete document",
+    "delete_document_confirm": "This action cannot be undone. This will permanently delete file and remove your data from our servers.",
+    "search_document": "Search documents",
+    "upload": "Upload",
+    "browse_files": "Browse Files",
+    "save_to_collection": "Save to collection",
+    "drag_drop_files_here": "Drag & drop files here",
+    "or_click_to_browse_files": "Or click to browse (max 100MB for each file)",
+    "last_updated": "Last Updated",
+    "file": "File",
+    "filename": "Filename",
+    "file_type": "Type",
+    "upload_progress": "Progress",
+    "remove_file": "Remove",
+    "clear_files": "Clear"
+  },
+  "page_evaluation": {
+    "metadata": {
+      "title": "Evaluations"
+    },
+    "search": "Search history",
+    "add_evaluation": "Add evaluation",
+    "delete_evaluation": "Delete evaluation",
+    "delete_evaluation_confirm": "This action cannot be undone. This will permanently delete evaluation and remove your evaluation from our servers.",
+    "retry_all_evaluation": "Retry All",
+    "retry_all_evaluation_confirm": "Are you sure you want to re-evaluate all questions?",
+    "retry_failed_evaluation": "Retry Failed",
+    "retry_failed_evaluation_confirm": "Are you sure you want to re-evaluate these failed questions?",
+    "evaluation_history": "Evaluation history",
+    "questions": "Question",
+    "avg_score": "Avg. Score",
+    "evaluation_name": "Evaluation name",
+    "evaluation_name_placeholder": "Enter the evaluation name",
+    "question_set": "Question Set",
+    "question_set_placeholder": "Select a question set",
+    "add_question_set": "Add Question Set",
+    "agent_llm": "Agent LLM",
+    "agent_llm_placeholder": "Select a agent model",
+    "judge_llm": "Judge LLM",
+    "judge_llm_placeholder": "Select a judge model",
+    "ground_truth": "Ground Truth",
+    "rag_answer": "RAG Answer",
+    "judge_reason": "LLM Judge Reasoning"
+  },
+  "page_graph": {
+    "metadata": {
+      "title": "Knowledge Graph"
+    },
+    "node_group": "Node Group",
+    "node_search": "Node search",
+    "no_nodes_found": "No node information found",
+    "merge_infomation": "{count} merge suggestions",
+    "merge_suggestions": "Merge suggestions",
+    "merge_accept": "Accept",
+    "merge_reject": "Reject",
+    "merge_accepted": "Accepted",
+    "merge_rejected": "Rejected",
+    "merge_pending": "Pending",
+    "entity_person": "Person",
+    "entity_category": "Category",
+    "entity_date": "Date",
+    "entity_product": "Product",
+    "entity_organization": "Organization",
+    "entity_technology": "Technology",
+    "entity_geo": "GEO",
+    "entity_event": "Event",
+    "entity_UNKNOWN": "UNKNOWN"
+  },
+  "page_marketplace": {
+    "metadata": {
+      "title": "Marketplace",
+      "description": "Discover and subscribe to quality knowledge collections shared by community, expand your knowledge boundaries"
+    },
+    "no_collections_found": "No collections found",
+    "no_description_available": "No description available",
+    "search": "Search"
+  },
+  "page_models": {
+    "metadata": {
+      "provider_title": "Model Provider",
+      "provider_description": "This section allows you to connect and customize your preferred Large Language Model (LLM) providers and models for personal use. Set up API keys, choose models, and adjust settings to enhance your AI experience.",
+      "model_title": "Models",
+      "model_description": "This section allows you to connect and customize your preferred Large Language Model (LLM) providers and models for personal use. Set up API keys, choose models, and adjust settings to enhance your AI experience."
+    },
+    "provider": {
+      "search_placeholder": "Search model provider",
+      "add_provider": "Add Provider",
+      "name": "Name",
+      "name_placeholder": "Provider display name.",
+      "base_url": "Base Url",
+      "base_url_placeholder": "Api base url",
+      "base_url_description": "The LLM API baseUrl refers to the root endpoint URL used to access a Large Language Model (LLM) API service.",
+      "api_dialect": "API Dialect",
+      "api_dialect_description": "Completion API Dialect suggests possible outputs, Embedding API Dialect converts them to vectors, and Rerank API Dialect optimizes their order based on semantic relevance.",
+      "models_count": "Models",
+      "scope": "Scope",
+      "creation_time": "Creation Time",
+      "enabled": "Enabled",
+      "confirm_disabled": "Confirm disabling this Provider",
+      "private": "Private",
+      "public": "Public",
+      "edit": "Edit",
+      "api_key": "API Key",
+      "api_key_placeholder": "Please enter the api key for the model provider.",
+      "api_key_description": "To access the AI model's capabilities, you need to provide a valid API Key from your chosen model provider. This key serves as a secure authentication method, allowing the system to process your requests while maintaining privacy and usage control.",
+      "edit_provider": "Edit Provider",
+      "delete": "Delete",
+      "delete_confirm": "This action cannot be undone. This will permanently delete provider and remove your data from our servers.",
+      "publish": "Publish to Public",
+      "publish_confirm": "Confirm publishing this provider to public? This action is irreversible and the provider will be visible to all admins.",
+      "publish_success": "Provider published successfully"
+    },
+    "model": {
+      "search_placeholder": "Search Models",
+      "add_model": "Add Model",
+      "name": "Model Name",
+      "name_placeholder": "Enter the model name",
+      "llm_params": "LLM params",
+      "agent": "Agent",
+      "collection": "Collection",
+      "api_type": "API Type",
+      "creation_time": "Creation Time",
+      "edit": "Edit",
+      "edit_model": "Edit Model",
+      "delete": "Delete",
+      "delete_confirm": "Confirm deletion of the model?",
+      "custom_llm_provider": "LLM Provider",
+      "custom_llm_provider_placeholder": "Enter the llm provider"
+    },
+    "default_model": {
+      "config": "Default models configuration",
+      "help": "Clearing selection will delete the default model configuration for this scenario"
+    }
+  },
+  "page_prompts": {
+    "metadata": {
+      "title": "Prompt Management",
+      "description": "Customize system prompts to adjust the AI assistant's behavior and conversation style. Changes override system defaults and can be reset at any time."
+    },
+    "agent_system": {
+      "title": "System Prompt",
+      "description": "Defines the AI assistant's persona, role, and behavioral guidelines. Affects the base behavior across all conversations."
+    },
+    "agent_query": {
+      "title": "Query Prompt",
+      "description": "The query template for each conversation. Controls how user questions and knowledge base context are combined before being sent to the AI."
+    },
+    "status": {
+      "customized": "Customized",
+      "default": "Using Default"
+    },
+    "action": {
+      "save": "Save",
+      "reset": "Reset to Default",
+      "reset_confirm": "Reset this prompt to system default?",
+      "reset_confirm_description": "This will delete your customization and restore the built-in system default prompt."
+    },
+    "toast": {
+      "save_success": "Prompt saved successfully",
+      "reset_success": "Prompt reset to default"
+    }
+  },
+  "page_question_set": {
+    "metadata": {
+      "title": "Question Sets"
+    },
+    "search": "Search",
+    "add_question_set": "Add Question Set",
+    "update_question_set": "Update Question Set",
+    "delete_question_set": "Delete Question Set",
+    "delete_question_set_confirm": "This action cannot be undone. This will permanently delete question set and remove your question set from our servers.",
+    "question_set_name": "Question set name",
+    "question_set_name_placeholder": "Enter your question set name.",
+    "question_set_description": "description",
+    "question_set_description_placeholder": "Enter your question set description.",
+    "add_question": "Add Question",
+    "add_question_manual": "Manual",
+    "add_question_generator": "Generate from collection",
+    "add_question_import": "Import from File",
+    "update_question": "Update Question",
+    "delete_question": "Delete Question",
+    "delete_question_confirm": "This action cannot be undone. This will permanently delete question.",
+    "question_content": "Question",
+    "question_content_placeholder": "Enter your question...",
+    "ground_truth": "Ground Truth",
+    "ground_truth_placeholder": "Enter the ground truth...",
+    "no_question_found": "No question found",
+    "question_count": "Question Count",
+    "question_count_placeholder": "Enter the question count",
+    "question_llm": "LLM model",
+    "question_llm_placeholder": "Select a model",
+    "prompt_template": "Prompt Template",
+    "prompt_template_placeholder": "Enter your prompt...",
+    "prompt_template_tips": "The following variables will be replaced by the system:",
+    "prompt_template_document_content": "The content of the document from the collection.",
+    "prompt_template_number_of_question": "The number of questions to be generated."
+  },
+  "page_quota": {
+    "metadata": {
+      "title": "Quotas",
+      "description": "Manage your usage limits for AI models, API calls, and other resources in this section. Quotas help you control costs, prevent overuse, and optimize your experience."
+    },
+    "limit": "Limit",
+    "usage": "Usage",
+    "bot_count": {
+      "title": "Bot Count",
+      "description": "The upper limit for active bots in a system, preventing resource overuse and ensuring stability."
+    },
+    "collection_count": {
+      "title": "Collection Count",
+      "description": "The maximum allowed collections in a database, controlling data structure complexity."
+    },
+    "document_count": {
+      "title": "Documents Overall",
+      "description": "Caps the total documents across all collections, managing overall storage capacity."
+    },
+    "documents_per_collection": {
+      "title": "Documents per Collection",
+      "description": "Limits documents per collection, optimizing query performance and data balance."
+    },
+    "max_document_count_per_collection": "Documents per Collection",
+    "max_document_count": "Documents Overall",
+    "max_collection_count": "Collection Count",
+    "max_bot_count": "Bot Count"
+  },
+  "page_search": {
+    "metadata": {
+      "title": "Search Test"
+    },
+    "search": "Search",
+    "test": "Test",
+    "questions": "Questions",
+    "questions_placeholder": "Enter your question.",
+    "creation_time": "Creation time",
+    "search_result": "Search Result",
+    "delete": "Delete",
+    "delete_confirm": "This action cannot be undone. This will permanently delete search result.",
+    "vector_search": "Vector",
+    "fulltext_search": "Fulltext",
+    "graph_search": "Graph",
+    "summary_search": "Summary"
+  },
+  "sidebar_workspace": {
+    "repositories": "Repositories",
+    "marketplace": "Marketplace",
+    "collections": "Collections",
+    "bots": "Bots",
+    "chats": "Chats",
+    "chats_new": "Create chat",
+    "display_empty_title": "New chat",
+    "more": "More",
+    "settings": "Settings",
+    "models": "Models",
+    "api_keys": "API Keys",
+    "audit_logs": "Audit Logs",
+    "quotas": "Quotas",
+    "prompts": "Prompts"
+  }
+}

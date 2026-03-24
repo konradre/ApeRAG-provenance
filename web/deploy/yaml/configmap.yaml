@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aperag-console
+data:
+  API_SERVER_ENDPOINT: http://localhost:8000
+  API_SERVER_BASE_PATH: /api/v1

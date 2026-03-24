@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aperag-frontend-config
+  labels:
+    {{- include "aperag.labels" . | nindent 4 }}
+data:
+  settings.js: |
+    const APERAG_CONFIG = {
+      title: {{ .Values.frontend.title | default "ApeRAG" | quote }},
+      favicon: {{ .Values.frontend.favicon | default "" | quote }},
+      logo_dark: {{ .Values.frontend.logoDark | default "" | quote }},
+      logo_light: {{ .Values.frontend.logoLight | default "" | quote }},
+      github: {{ .Values.frontend.github | default "https://github.com/apecloud/ApeRAG" | quote }},
+
+      // config from apiserver
+      auth: {
+        type: {{ .Values.api.authType | default "none" | quote }},
+        auth_domain: {{ .Values.api.authDomain | default "" | quote }},
+        auth_app_id: {{ .Values.api.authAppId | default "" | quote }},
+      },
+      public_ips: {{ .Values.frontend.publicIps | default list | toJson }},
+    } 

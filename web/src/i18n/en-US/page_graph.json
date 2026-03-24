@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "title": "Knowledge Graph"
+  },
+  "node_group": "Node Group",
+
+  "node_search": "Node search",
+
+  "no_nodes_found": "No node information found",
+  "merge_infomation": "{count} merge suggestions",
+  "merge_suggestions": "Merge suggestions",
+
+  "merge_accept": "Accept",
+  "merge_reject": "Reject",
+
+  "merge_accepted": "Accepted",
+  "merge_rejected": "Rejected",
+  "merge_pending": "Pending",
+
+  "entity_person": "Person",
+  "entity_category": "Category",
+  "entity_date": "Date",
+  "entity_product": "Product",
+  "entity_organization": "Organization",
+  "entity_technology": "Technology",
+  "entity_geo": "GEO",
+  "entity_event": "Event",
+  "entity_UNKNOWN": "UNKNOWN"
+}
